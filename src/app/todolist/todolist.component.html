@@ -11,12 +11,21 @@
         placeholder="Enter task"
         ngModel
         name="task"
+        required
       />
-      <small id="errorMessage" class="form-text text-danger"
+      <small
+        *ngIf="taskForm.invalid && taskForm.dirty"
+        id="errorMessage"
+        class="form-text text-danger"
         >Required field</small
       >
     </div>
-    <button id="submitButton" type="submit" class="btn btn-primary">
+    <button
+      [disabled]="taskForm.invalid"
+      id="submitButton"
+      type="submit"
+      class="btn btn-primary"
+    >
       Submit
     </button>
   </form>
@@ -30,12 +39,21 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let task of taskArray">
+      <tr *ngFor="let task of taskArray; index as i">
         <td>{{ task.taskName }}</td>
         <td>
-          <input id="myCheckbox" type="checkbox" [checked]="task.isCompleted" />
+          <input
+            (change)="onCheck(i)"
+            id="myCheckbox"
+            type="checkbox"
+            [checked]="task.isCompleted"
+          />
         </td>
-        <td><button class="btn btn-danger btn-sm">Delete</button></td>
+        <td>
+          <button class="btn btn-danger btn-sm" (click)="onDelete(i)">
+            Delete
+          </button>
+        </td>
       </tr>
     </tbody>
   </table>
